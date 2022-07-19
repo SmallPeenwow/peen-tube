@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Menu from './components/Menu';
 import Navbar from './components/Navbar';
+import './App.css';
 
 const Container = styled.div`
 	display: flex;
@@ -10,7 +11,7 @@ const Main = styled.div`
 	flex: 7;
 `;
 
-const Wrapper = styled.div;
+const Wrapper = styled.div``;
 
 function App() {
 	return (
@@ -18,7 +19,9 @@ function App() {
 			<Menu />
 			<Main>
 				<Navbar />
-				<Wrapper>Video Cards</Wrapper>
+				<Wrapper>
+					<h1>test</h1>
+				</Wrapper>
 			</Main>
 		</Container>
 	);
