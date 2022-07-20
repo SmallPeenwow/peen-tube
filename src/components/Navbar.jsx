@@ -33,9 +33,11 @@ const Search = styled.div`
 	border-radius: 3px;
 `;
 
-const Input = styled.div`
+const Input = styled.input`
 	border: none;
 	background-color: transparent;
+	outline: none;
+	color: ${({ theme }) => theme.text};
 `;
 
 const Button = styled.button`
