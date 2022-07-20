@@ -20,13 +20,17 @@ import SettingsBrightnessOutlinedIcon from '@mui/icons-material/SettingsBrightne
 import { Link } from 'react-router-dom';
 
 const Container = styled.div`
-	flex: 1.5;
+	flex: 1;
 	background-color: ${({ theme }) => theme.bgLighter};
 	height: 100vh;
 	color: ${({ theme }) => theme.text};
 	font-size: 14px;
 	position: sticky;
 	top: 0;
+
+	@media (max-width: 980px) {
+		flex: 1.5;
+	}
 `;
 
 const Wrapper = styled.div`
@@ -38,7 +42,7 @@ const Logo = styled.div`
 	align-items: center;
 	gap: 5px;
 	font-weight: bold;
-	padding: 15px 10px 16px 20px;
+	padding: 15px 10px 16px 25px;
 `;
 
 const Img = styled.img`
@@ -50,7 +54,7 @@ const Item = styled.div`
 	align-items: center;
 	gap: 20px;
 	cursor: pointer;
-	padding: 7.5px 15px;
+	padding: 8.5px 20px;
 
 	&:hover {
 		background-color: ${({ theme }) => theme.soft};
@@ -63,7 +67,7 @@ const Hr = styled.hr`
 `;
 
 const Login = styled.div`
-	padding: 0px 15px;
+	padding: 0px 20px;
 `;
 
 const Button = styled.button`
@@ -85,7 +89,7 @@ const Title = styled.h2`
 	font-weight: 500;
 	color: #aaaaaa;
 	margin-bottom: 20px;
-	padding: 0px 15px;
+	padding: 0px 20px;
 `;
 
 const Menu = ({ darkMode, setDarkMode }) => {
