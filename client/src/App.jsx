@@ -34,7 +34,9 @@ function App() {
 						<Navbar />
 						<Wrapper>
 							<Routes path='/'>
-								<Route index element={<Home />} />
+								<Route index element={<Home type='random' />} />
+								<Route path='trends' index element={<Home type='trend' />} />
+								<Route path='subscriptions' index element={<Home type='sub' />} />
 								<Route path='singin' element={<SignIn />} />
 								<Route path='video'>
 									<Route path=':id' element={<Video />} />
