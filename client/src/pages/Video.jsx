@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOffAltOutlinedIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
@@ -6,6 +6,11 @@ import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
 import Comments from '../components/Comments';
 import Card from '../components/Card';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import axios from 'axios';
+import { fetchSuccess } from '../redux/videoSlice';
+import { format } from 'timeago.js';
 
 const Container = styled.div`
 	display: flex;
@@ -109,6 +114,28 @@ const Subscribe = styled.button`
 `;
 
 const Video = () => {
+	const { currentUser } = useSelector((state) => state.user);
+	const { currentVideo } = useSelector((state) => state.video);
+	const dispatch = useDispatch();
+
+	const path = useLocation().pathname.split('/')[2];
+
+	const [channel, setChannel] = useState({});
+
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const videoRes = await axios.get(`/videos/find/${path}`);
+				const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`);
+
+				setChannel(channelRes.data);
+				dispatch(fetchSuccess(videoRes.data));
+			} catch (err) {}
+		};
+
+		fetchData();
+	}, [path, dispatch]);
+
 	return (
 		<Container>
 			<Content>
@@ -123,12 +150,14 @@ const Video = () => {
 						allowfullscreen
 					></iframe>
 				</VideoWrapper>
-				<Title>Test Video</Title>
+				<Title>{currentVideo.title}</Title>
 				<Details>
-					<Info>Views and date</Info>
+					<Info>
+						{currentVideo.views} views - {format(currentVideo.createdAt)}
+					</Info>
 					<Buttons>
 						<Button>
-							<ThumbUpOutlinedIcon /> 123
+							<ThumbUpOutlinedIcon /> {currentVideo.likes?.length}
 						</Button>
 						<Button>
 							<ThumbDownOffAltOutlinedIcon /> Dislike
@@ -144,14 +173,11 @@ const Video = () => {
 				<Hr />
 				<Channel>
 					<ChannelInfo>
-						<Image src='https://yt3.ggpht.com/yti/APfAmoE-Q0ZLJ4vk3vqmV4Kwp0sbrjxLyB8Q4ZgNsiRH=s88-c-k-c0x00ffffff-no-rj-mo' />
+						<Image src={channel.img} />
 						<ChannelDetail>
-							<ChannelName>Peen</ChannelName>
-							<ChannelCounter>10k Subscribers</ChannelCounter>
-							<Description>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat laudantium expedita omnis deleniti, consequuntur porro quibusdam
-								nobis eum pariatur quasi neque in officiis repudiandae vero, debitis, eligendi voluptatibus id nam!
-							</Description>
+							<ChannelName>{channel.name}</ChannelName>
+							<ChannelCounter>{channel.subscribers} Subscribers</ChannelCounter>
+							<Description>{currentVideo.desc}</Description>
 						</ChannelDetail>
 					</ChannelInfo>
 					<Subscribe>SUBSCRIBE</Subscribe>
