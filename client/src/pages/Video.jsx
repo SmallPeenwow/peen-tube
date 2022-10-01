@@ -4,12 +4,14 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOffAltOutlinedIcon from '@mui/icons-material/ThumbDownOffAltOutlined';
 import ReplyOutlinedIcon from '@mui/icons-material/ReplyOutlined';
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import Comments from '../components/Comments';
 import Card from '../components/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import { fetchSuccess } from '../redux/videoSlice';
+import { dislike, fetchSuccess, like } from '../redux/videoSlice';
 import { format } from 'timeago.js';
 
 const Container = styled.div`
@@ -136,6 +138,16 @@ const Video = () => {
 		fetchData();
 	}, [path, dispatch]);
 
+	const handleLike = async () => {
+		await axios.put(`/users/like/${currentVideo._id}`);
+		dispatch(like(currentUser._id));
+	};
+
+	const handleDislike = async () => {
+		await axios.put(`/users/dislike/${currentVideo._id}`);
+		dispatch(dislike(currentUser._id));
+	};
+
 	return (
 		<Container>
 			<Content>
@@ -156,11 +168,11 @@ const Video = () => {
 						{currentVideo.views} views - {format(currentVideo.createdAt)}
 					</Info>
 					<Buttons>
-						<Button>
-							<ThumbUpOutlinedIcon /> {currentVideo.likes?.length}
+						<Button onClick={handleLike}>
+							{currentVideo.likes?.includes(currentUser.id) ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />} {currentVideo.likes?.length}
 						</Button>
-						<Button>
-							<ThumbDownOffAltOutlinedIcon /> Dislike
+						<Button onClick={handleDislike}>
+							{currentVideo.dislikes?.includes(currentUser._id) ? <ThumbDownIcon /> : <ThumbDownOffAltOutlinedIcon />} Dislike
 						</Button>
 						<Button>
 							<ReplyOutlinedIcon /> Share
