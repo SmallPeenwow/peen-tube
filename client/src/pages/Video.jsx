@@ -165,7 +165,7 @@ const Video = () => {
 		<Container>
 			<Content>
 				<VideoWrapper>
-					<VideoFrame scr={currentVideo.videoUrl} />
+					<VideoFrame scr={currentVideo.videoUrl} controls />
 				</VideoWrapper>
 				<Title>{currentVideo.title}</Title>
 				<Details>
